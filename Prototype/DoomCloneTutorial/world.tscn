@@ -1,0 +1,86 @@
+[gd_scene load_steps=10 format=3 uid="uid://bsqgp7tejvwxy"]
+
+[ext_resource type="PackedScene" uid="uid://b1n8y1eqcayw4" path="res://player.tscn" id="1_wy2t0"]
+[ext_resource type="PackedScene" uid="uid://nbkveoryoppw" path="res://enemy.tscn" id="2_e5ipr"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6r8ix"]
+albedo_color = Color(0.683077, 0.683077, 0.683077, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_mb14h"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kco87"]
+albedo_color = Color(0.0431373, 1, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_2bocj"]
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_pob0k"]
+data = PackedVector3Array(-0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5)
+
+[sub_resource type="Sky" id="Sky_1ixnc"]
+
+[sub_resource type="Environment" id="Environment_7l3lo"]
+background_mode = 1
+background_color = Color(0.417184, 0.457083, 0.451283, 1)
+sky = SubResource("Sky_1ixnc")
+ambient_light_color = Color(4.81307e-07, 0.522497, 0.746381, 1)
+
+[node name="World" type="Node3D"]
+
+[node name="Environemnt" type="Node3D" parent="."]
+
+[node name="Ground" type="MeshInstance3D" parent="Environemnt"]
+transform = Transform3D(9.42389, 0, 0, 0, 1, 0, 0, 0, 8.45431, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_6r8ix")
+mesh = SubResource("PlaneMesh_mb14h")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Environemnt"]
+transform = Transform3D(2.3915, 0, 0, 0, 1.38218, 0, 0, 0, 1, 0, 0.749837, 0)
+material_override = SubResource("StandardMaterial3D_kco87")
+mesh = SubResource("BoxMesh_2bocj")
+skeleton = NodePath("../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Environemnt/MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environemnt/MeshInstance3D/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_pob0k")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Environemnt/MeshInstance3D"]
+transform = Transform3D(2.42308, 0, 0, 0, 1.40043, 0, 0, 0, 1.0132, -2.21096, 0.114305, 4.57231)
+material_override = SubResource("StandardMaterial3D_kco87")
+mesh = SubResource("BoxMesh_2bocj")
+skeleton = NodePath("../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Environemnt/MeshInstance3D/MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environemnt/MeshInstance3D/MeshInstance3D/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_pob0k")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Environemnt/MeshInstance3D/MeshInstance3D"]
+transform = Transform3D(0.181397, 0, 0, 0, 1.40043, 0, 0, 0, 1.0132, 1.99861, 0.114305, -9.6237)
+material_override = SubResource("StandardMaterial3D_kco87")
+mesh = SubResource("BoxMesh_2bocj")
+skeleton = NodePath("../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Environemnt/MeshInstance3D/MeshInstance3D/MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environemnt/MeshInstance3D/MeshInstance3D/MeshInstance3D/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_pob0k")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_7l3lo")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
+shadow_enabled = true
+
+[node name="Player" parent="." instance=ExtResource("1_wy2t0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.96415, 0, 4.06804)
+
+[node name="Enemy" parent="." instance=ExtResource("2_e5ipr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.01121, 1.18922, -4.26166)
+
+[node name="Enemy2" parent="." instance=ExtResource("2_e5ipr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.83718, 1.18922, -4.26166)
+
+[node name="Enemy3" parent="." instance=ExtResource("2_e5ipr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.9617, 1.18922, -5.55261)

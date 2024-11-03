@@ -1,0 +1,171 @@
+[gd_scene load_steps=11 format=3 uid="uid://b1n8y1eqcayw4"]
+
+[ext_resource type="Script" path="res://player.gd" id="1_2mkqw"]
+[ext_resource type="Texture2D" uid="uid://cmnj7rrk1gira" path="res://gun_sprites.png" id="1_thc2b"]
+[ext_resource type="AudioStream" uid="uid://dx3m50wja333k" path="res://revolver_shot1.wav" id="2_t3tp3"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_nferf"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5iua4"]
+atlas = ExtResource("1_thc2b")
+region = Rect2(0, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fgvx2"]
+atlas = ExtResource("1_thc2b")
+region = Rect2(512, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4o1t2"]
+atlas = ExtResource("1_thc2b")
+region = Rect2(1024, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_glaaw"]
+atlas = ExtResource("1_thc2b")
+region = Rect2(1536, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8xnvj"]
+atlas = ExtResource("1_thc2b")
+region = Rect2(0, 0, 512, 512)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2te1q"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5iua4")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fgvx2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4o1t2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_glaaw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8xnvj")
+}],
+"loop": false,
+"name": &"shoot",
+"speed": 10.0
+}]
+
+[node name="Player" type="CharacterBody3D" groups=["Player"]]
+collision_layer = 2
+collision_mask = 3
+script = ExtResource("1_2mkqw")
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+target_position = Vector3(0, 0, -1000)
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_nferf")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="GunBase" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -40.0
+offset_right = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasLayer/GunBase"]
+position = Vector2(201, -125)
+scale = Vector2(0.625, 0.625)
+sprite_frames = SubResource("SpriteFrames_2te1q")
+animation = &"shoot"
+autoplay = "idle"
+frame = 3
+frame_progress = 1.0
+
+[node name="Crosshair" type="ColorRect" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -4.0
+offset_top = -4.0
+offset_right = 4.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+color = Color(1, 1, 1, 0.564706)
+metadata/_edit_use_anchors_ = true
+
+[node name="DeathScreen" type="Control" parent="CanvasLayer"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="CanvasLayer/DeathScreen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -118.0
+offset_top = -47.0
+offset_right = 118.0
+offset_bottom = 47.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="CanvasLayer/DeathScreen/Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -39.0
+offset_top = 5.0
+offset_right = 39.0
+offset_bottom = 36.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Respawn"
+
+[node name="Label" type="Label" parent="CanvasLayer/DeathScreen/Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -34.0
+offset_top = -32.0
+offset_right = 35.0
+offset_bottom = -9.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "You Died
+"
+
+[node name="ShootSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("2_t3tp3")
+bus = &"SFX"
